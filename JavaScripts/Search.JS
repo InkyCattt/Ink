@@ -11,16 +11,26 @@ function getSearchQuery() {
 var searchQuery = getSearchQuery();
 document.title = searchQuery ? searchQuery + " - Ink" : "Ink";
 
-function findLinks(text) {
-    // Regular expression to match URLs in the text
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const urls = text.match(urlRegex) || [];
-    return urls;
+function searchWebsites(query) {
+    const apiKey = 'd26d54f8cae8da9c713792f7e70a00f63db720d768e2437cb21ef31be275d2f6';
+    const apiUrl = `https://serpapi.com/search.json?q=${query}&engine=google&api_key=${apiKey}`;
+
+    return fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            // Extract and return relevant information from the SerpApi response
+            return data.organic_results.map(result => result.link);
+        })
+        .catch(error => {
+            console.error('Error fetching search results:', error);
+            return [];
+        });
 }
-  
-const extractedLinks = findLinks(searchQuery);
-  
-console.log("Extracted links:", extractedLinks);
+
+searchWebsites(searchQuery)
+    .then(extractedLinks => {
+        console.log("Extracted links:", extractedLinks);
+    });
 
 search();
 
