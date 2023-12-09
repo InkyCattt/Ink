@@ -1,8 +1,26 @@
 function getSearchQuery() {
     // Get the URL parameter "search"
     var urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('search');
+    var searchQuery = urlParams.get('search');
+    
+    // Check if searchQuery is null or undefined, and replace it with an empty string
+    return searchQuery ? searchQuery : '';
 }
+
+// Change the title of the webpage
+var searchQuery = getSearchQuery();
+document.title = searchQuery ? searchQuery + " - Ink" : "Ink";
+
+function findLinks(text) {
+    // Regular expression to match URLs in the text
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const urls = text.match(urlRegex) || [];
+    return urls;
+}
+  
+const extractedLinks = findLinks(searchQuery);
+  
+console.log("Extracted links:", extractedLinks);
 
 search();
 
