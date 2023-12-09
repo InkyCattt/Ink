@@ -1,60 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ink</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #000;
-            color: #fff;
-        }
-        .container {
-            position: absolute;
-            top: 0px; /* Adjust the distance from the top as needed */
-            left: 5px; /* Adjust the distance from the left as needed */
-            display: flex; /* Use flexbox to align items horizontally */
-            align-items: center; /* Center items vertically in the flex container */
-        }
-        .logo {
-            margin-right: 20px; /* Add right margin to create space between logo and search bar */
-            font-size: 48px;
-            color: #ffffff;
-            font-weight: bold;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-family: 'Courier New', Courier, monospace;
-            text-decoration: none; /* Remove default underline for anchor tag */
-            cursor: pointer; /* Change cursor to pointer on hover for better UX */
-        }
-        .search-bar {
-            width: 450px; /* Adjust width to take the remaining space */
-            padding: 10px;
-            border: 1px solid #fff;
-            border-radius: 24px;
-            outline: none;
-            font-size: 16px;
-            box-sizing: border-box;
-            background-color: #000;
-            color: #fff;
-        }
-        #searchResults {
-            margin-top: 65px; /* Adjust the margin as needed */
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="logo">Ink</div>
-        <input type="text" id="searchInput" class="search-bar" placeholder="Search Ink or type a URL">
-    </div>
+function getSearchQuery() {
+    // Get the URL parameter "search"
+    var urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('search');
+}
 
-    <div id="searchResults"></div>
+// Change the title of the webpage
+var searchQuery = getSearchQuery();
+document.title = searchQuery + " - Ink";
 
-    <script src="./JavaScripts/Search.JS"></script>
+search();
 
-</body>
-</html>
+// Function to perform a basic search
+async function search() {
+    const query = getSearchQuery();
+    
+    if (!query) {
+        console.log('No search query provided.');
+        return;
+    }
+
+    try {
+        const results = await fetchData(query);
+        console.log(results);
+        displayResults(results);
+    } catch (error) {
+        console.error('Error performing search:', error);
+    }
+}
+
+// Function to fetch data from Wikipedia API
+async function fetchData(query) {
+    const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${query}&format=json&origin=*`;
+
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        return data.query.search || [];
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        throw error; // Rethrow the error to be caught by the caller
+    }
+}
+
+// Function to display search results
+function displayResults(results) {
+    const resultsDiv = document.getElementById('searchResults');
+    resultsDiv.innerHTML = '';
+
+    if (results.length === 0) {
+        resultsDiv.innerHTML = '<p>No results found.</p>';
+    } else {
+        results.forEach(page => {
+            const resultItem = document.createElement('div');
+            resultItem.innerHTML = `<h3>${page.title}</h3><p>${page.snippet}</p>`;
+            resultsDiv.appendChild(resultItem);
+        });
+    }
+}
+
+// Attach the search function to the "Enter" key press event
+document.getElementById('searchInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        search();
+    }
+});
+
+function goToLink(searchName) {
+    window.location.href = searchName;
+}
+
+function performSearch() {
+    var searchTerm = document.getElementById("searchInput").value;
+    window.location.href = "Search.html?search=" + searchTerm
+    goToLink("Search.html?search=" + searchTerm);
+}
+
+// Alternatively, you can use JavaScript to handle the click event and navigate to the desired URL.
+var logoLink = document.querySelector('.logo');
+logoLink.addEventListener('click', function() {
+    // Replace 'your-desired-url' with the actual URL you want to navigate to
+    goToLink("Home.html");
+});
+
+// Get the search input element
+var searchInput = document.getElementById('searchInput');
+
+// Add event listener for 'keydown' event
+searchInput.addEventListener('keydown', function(event) {
+    // Check if the key pressed is Enter (key code 13)
+    if (event.keyCode === 13) {
+        // Call the performSearch function
+        performSearch();
+    }
+});
