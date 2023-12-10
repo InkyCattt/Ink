@@ -18,6 +18,12 @@
             margin: 100px auto 0;
             text-align: center;
         }
+        .top-right-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 20px;
+        }
         .logo {
             margin-bottom: 20px;
             font-size: 48px;
@@ -42,17 +48,32 @@
         .search-btn {
             margin-top: 10px;
             padding: 8px 20px;
-            border: 1px solid #000000;
+            border: 1px solid #ffffff;
             border-radius: 5px;
-            background-color: #ffffff;
-            color: #000000;
+            background-color: #000000;
+            color: #ffffff;
             font-size: 16px;
             cursor: pointer;
         }
         .search-btn:hover {
+            background-color: #ffffff;
+            border-color: #000000;
+            color: #000000;
+        }
+        .etc-btn {
+            margin-top: -10px;
+            padding: 8px 20px;
+            border: 1px solid #ffffff;
+            border-radius: 5px;
             background-color: #000000;
-            border-color: #ffffff;
             color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .etc-btn:hover {
+            background-color: #ffffff;
+            border-color: #000000;
+            color: #000000;
         }
     </style>
 </head>
@@ -63,6 +84,11 @@
         <input type="text" id="searchInput" class="search-bar" placeholder="Search Ink or type a URL">
         <br>
         <input type="button" value="Ink Search" class="search-btn" onclick="performSearch()">
+    </div>
+
+    <div class="top-right-container">
+        <input type="button" value="Ink-Mail" class="etc-btn" onclick="goToLink('Error404.html')">
+        <input type="button" value="Code-Verse" class="etc-btn" onclick="goToLink('Error404.html')">
     </div>
 
     <script src="./JavaScripts/Main.JS"></script>

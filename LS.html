@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="x-icon" href="./UI/Ink.png">
-    <title>Ink</title>
+    <title class="PageName">Ink-Login</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -12,26 +12,6 @@
             padding: 0;
             background-color: #000;
             color: #fff;
-        }
-        h2 {
-            margin-top: 25px; /* Add some top margin to the h1 text for spacing */
-            font-size: 75px; /* Change the font size to 36px or any other preferred size */
-            font-family: sans-serif; /* Set the font family to sans-serif */
-        }
-        p {
-            font-family: sans-serif; /* Set the font family to sans-serif */
-        }
-        .center-container {
-            position: absolute;
-            top: 45%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-        .title {
-            color: #313131;
-            font-family: sans-serif;
-            margin-left: auto;
         }
         .container {
             position: absolute;
@@ -51,7 +31,27 @@
             text-decoration: none; /* Remove default underline for anchor tag */
             cursor: pointer; /* Change cursor to pointer on hover for better UX */
         }
-        .search-btn {
+        /* Add styles for the login/signup form */
+        .form-container {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-input {
+            margin-top: 10px;
+            width: 40%;
+            max-width: 600px;
+            padding: 10px;
+            border: 1px solid #fff;
+            border-radius: 24px;
+            outline: none;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: #000;
+            color: #fff;
+        }
+        .form-button {
             margin-top: 10px;
             padding: 8px 20px;
             border: 1px solid #ffffff;
@@ -61,7 +61,7 @@
             font-size: 16px;
             cursor: pointer;
         }
-        .search-btn:hover {
+        .form-button:hover {
             background-color: #ffffff;
             border-color: #000000;
             color: #000000;
@@ -72,15 +72,18 @@
     <div class="container">
         <div class="logo">Ink</div>
     </div>
-    <!-- Centered container for image and text -->
-    <div class="center-container">
-        <!-- Add your big image and text here -->
-        <h2>Error 404 - Page Not Found</h2>
-        <p>Oops! It seems like the page you were looking for doesn't exist or may have been moved. Please check the URL for any typos or click the button below to return to the homepage.</p>
-        <button class="search-btn" onclick="goToLink('Home.html')">Home</button>
+
+    <!-- Login/Signup Form -->
+    <div class="form-container">
+        <h2>Login</h2>
+        <input class="form-input" type="text" placeholder="Inkmail-(example~inkmail.net)" required>
+        <input class="form-input" type="password" placeholder="Password-(example1234)" required>
+        <button class="form-button" type="submit">Login</button>
+        <p>Don't have an account?</p>
+        <button class="form-button" onclick="goToLink('LS.html?type=Signup')">Sign up</button>
     </div>
 
-    <script src="./JavaScripts/Error.JS"></script>
-    
+    <!-- JavaScript for handling form switching -->
+    <script src="./JavaScripts/LS.JS"></script>
 </body>
 </html>
