@@ -1,3 +1,6 @@
+var currentAnswer = '';
+var useCalculator = false;
+
 function getSearchQuery() {
     // Get the URL parameter "search"
     var urlParams = new URLSearchParams(window.location.search);
@@ -49,6 +52,8 @@ function displayResults(results, query) {
 
             if(isMathExpression(normalizedQuery)) {
                 displayBar.textContent = query;
+                currentAnswer = query;
+                useCalculator = true;
             }
 
             // Define button labels     
@@ -85,8 +90,6 @@ function displayResults(results, query) {
         }
     }
 }
-var currentAnswer = '';
-var useCalculator = false;
 
 // Function to handle calculator button click
 function onButtonClick(label) {
