@@ -44,6 +44,7 @@ function displayResults(results, query) {
             // Calculator display bar
             const displayBar = document.createElement('div');
             displayBar.classList.add('calculator-display-bar');
+            displayBar.textContent = '0';
             calculatorBox.appendChild(displayBar);
 
             if(isMathExpression(normalizedQuery)) {
@@ -84,16 +85,28 @@ function displayResults(results, query) {
         }
     }
 }
+var currentAnswer = '';
+var useCalculator = false;
 
 // Function to handle calculator button click
 function onButtonClick(label) {
+    const displayBar = document.querySelector('.calculator-display-bar');
+    var currentExpression = displayBar.textContent;
+
+    if (!useCalculator) {
+        currentExpression = '';
+        displayBar.textContent = '';
+        currentAnswer = '';
+        useCalculator = true;
+    }
+
     if (label === 'sin' || label === 'cos' || label === 'log' || label === 'tan' || label === '√' || label === 'ln') {
         label = label += '(';
     } else if (label === 'x!') {
         label = '!'
+    } else if (label === '+' || label === '-' || label === '*' || label === '/' || label === ' ' || label === '%') {
+        displayBar.textContent = currentAnswer;
     }
-    const displayBar = document.querySelector('.calculator-display-bar');
-    var currentExpression = displayBar.textContent;
 
     if (displayBar.textContent.includes('Result:') || displayBar.textContent.includes('Invalid Expression')) {
         currentExpression = '';
@@ -104,6 +117,7 @@ function onButtonClick(label) {
         try {
             const result = calculateTrig(currentExpression);
             displayBar.textContent = `Result: ${result}`;
+            currentAnswer = result;
         } catch (error) {
             // Handle invalid expressions
             displayBar.textContent = 'Invalid Expression';
@@ -111,10 +125,13 @@ function onButtonClick(label) {
     } else if (label === 'CE') {
         // Clear the input and display bar
         currentExpression = '';
-        displayBar.textContent = '';
+        displayBar.textContent = '0';
+        currentAnswer = '';
+        useCalculator = false;
     } else {
         // Update the input and display bar with the pressed button
         displayBar.textContent = displayBar.textContent += label;
+        currentAnswer = displayBar.textContent;
     }
 }
 
@@ -134,9 +151,16 @@ function calculateTrig(expression) {
                            .replace(/√\(/g, 'Math.sqrt(')
                            .replace(/ln\(/g, 'Math.log(')
                            .replace(/log\(/g, 'Math.log10(')
-                           .replace(/π/g, 'Math.PI');
+                           .replace(/π/g, 'Math.PI')
+                           .replace(/%/g, '/100');
 
-    return eval(expression);
+    const result = eval(expression);
+
+    // Determine the number of decimal places in the result
+    const decimalPlaces = (result.toString().split('.')[1] || []).length;
+
+    // Use toFixed to round the result to the determined number of decimal places
+    return parseFloat(result.toFixed(decimalPlaces));
 }
 
 // Attach the search function to the "Enter" key press event
