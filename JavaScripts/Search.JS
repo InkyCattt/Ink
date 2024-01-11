@@ -122,8 +122,9 @@ function onButtonClick(label) {
             // Handle invalid expressions
             displayBar.textContent = 'Invalid Expression';
         }
-    } else if (label === 'C') {
+    } else if (label === 'CE') {
         // Clear the input and display bar
+        currentExpression = '';
         displayBar.textContent = '';
     } else {
         // Update the input and display bar with the pressed button
