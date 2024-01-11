@@ -25,7 +25,7 @@ async function search() {
     try {
         const results = await fetchData(query);
         console.log(results);
-        displayResults(results);
+        displayResults(results, query);
     } catch (error) {
         console.error('Error performing search:', error);
     }
@@ -46,19 +46,110 @@ async function fetchData(query) {
 }
 
 // Function to display search results
-function displayResults(results) {
+function displayResults(results, query) {
     const resultsDiv = document.getElementById('searchResults');
     resultsDiv.innerHTML = '';
 
     if (results.length === 0) {
         resultsDiv.innerHTML = '<p>No results found.</p>';
     } else {
-        results.forEach(page => {
-            const resultItem = document.createElement('div');
-            resultItem.innerHTML = `<h3>${page.title}</h3><p>${page.snippet}</p>`;
-            resultsDiv.appendChild(resultItem);
-        });
+        const normalizedQuery = query;
+
+        if (normalizedQuery.includes('calculator') || isMathExpression(normalizedQuery)) {
+            // Display calculator with buttons and display bar
+            const calculatorBox = document.createElement('div');
+            calculatorBox.classList.add('calculator-box');
+
+            // Calculator display bar
+            const displayBar = document.createElement('div');
+            displayBar.classList.add('calculator-display-bar');
+            calculatorBox.appendChild(displayBar);
+
+            if(isMathExpression(normalizedQuery)) {
+                displayBar.textContent = query;
+            }
+
+            // Define button labels     
+            const buttonLabels = [
+                ' ', 'x!', '(', ')', '%', 'CE',
+                'sin', 'ln', '7', '8', '9', '/',
+                'cos', 'log', '4', '5', '6', '*',
+                'tan', '√', '1', '2', '3', '-',
+                'Ans', 'π', '0', '.', '=', '+',
+            ];      
+
+            // Create buttons dynamically
+            buttonLabels.forEach(label => {
+                const button = document.createElement('div');
+                button.classList.add('calculator-button');
+                button.textContent = label;
+                button.addEventListener('click', () => onButtonClick(label));
+                calculatorBox.appendChild(button);
+            });
+
+            resultsDiv.appendChild(calculatorBox);
+        } else {
+            // Display regular search results
+            results.forEach(page => {
+                const resultItem = document.createElement('div');
+                resultItem.innerHTML = `<h3>${page.title}</h3><p>${page.snippet}</p>`;
+                resultsDiv.appendChild(resultItem);
+            });
+        }
     }
+}
+
+// Function to handle calculator button click
+function onButtonClick(label) {
+    if (label === 'sin' || label === 'cos' || label === 'log' || label === 'tan' || label === '√' || label === 'ln') {
+        label = label += '(';
+    } else if (label === 'x!') {
+        label = '!'
+    }
+    const displayBar = document.querySelector('.calculator-display-bar');
+    var currentExpression = displayBar.textContent;
+
+    if (displayBar.textContent.includes('Result:') || displayBar.textContent.includes('Invalid Expression')) {
+        currentExpression = '';
+        displayBar.textContent = '';
+    }
+
+    if (label === '=') {
+        try {
+            const result = calculateTrig(currentExpression);
+            displayBar.textContent = `Result: ${result}`;
+        } catch (error) {
+            // Handle invalid expressions
+            displayBar.textContent = 'Invalid Expression';
+        }
+    } else if (label === 'C') {
+        // Clear the input and display bar
+        displayBar.textContent = '';
+    } else {
+        // Update the input and display bar with the pressed button
+        displayBar.textContent = displayBar.textContent += label;
+    }
+}
+
+// Function to check if the query is a math expression
+function isMathExpression(query) {
+    // Use a regular expression to check if the query contains math-related characters
+    const mathRegex = /\d([+\-*/=^()%]|sin\(\)|cos\(\)|tan\(\)|√\(\)|ln\(\)|log\(\)|π)/g;
+    return mathRegex.test(query);
+}
+
+// Function to calculate trigonometric and other special functions
+function calculateTrig(expression) {
+    // Replace trigonometric and special functions with their calculated values
+    expression = expression.replace(/sin\(/g, 'Math.sin(')
+                           .replace(/cos\(/g, 'Math.cos(')
+                           .replace(/tan\(/g, 'Math.tan(')
+                           .replace(/√\(/g, 'Math.sqrt(')
+                           .replace(/ln\(/g, 'Math.log(')
+                           .replace(/log\(/g, 'Math.log10(')
+                           .replace(/π/g, 'Math.PI');
+
+    return eval(expression);
 }
 
 // Attach the search function to the "Enter" key press event
