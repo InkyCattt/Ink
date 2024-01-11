@@ -16,33 +16,9 @@ search();
 // Function to perform a basic search
 async function search() {
     const query = getSearchQuery();
-    
-    if (!query) {
-        console.log('No search query provided.');
-        return;
-    }
-
-    try {
-        const results = await fetchData(query);
-        console.log(results);
-        displayResults(results, query);
-    } catch (error) {
-        console.error('Error performing search:', error);
-    }
-}
-
-// Function to fetch data from Wikipedia API
-async function fetchData(query) {
-    const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${query}&format=json&origin=*`;
-
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        return data.query.search || [];
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error; // Rethrow the error to be caught by the caller
-    }
+    const results = '';
+    console.log(results);
+    displayResults(results, query);
 }
 
 // Function to display search results
@@ -50,8 +26,13 @@ function displayResults(results, query) {
     const resultsDiv = document.getElementById('searchResults');
     resultsDiv.innerHTML = '';
 
-    if (results.length === 0) {
-        resultsDiv.innerHTML = '<p>No results found.</p>';
+    if(!query) {
+        const errorBox = document.createElement('div');
+        errorBox.classList.add('error-box');
+        const errorMessage = document.createElement('p');
+        errorMessage.textContent = 'No search provided.';
+        errorBox.appendChild(errorMessage);
+        resultsDiv.appendChild(errorBox);
     } else {
         const normalizedQuery = query;
 
@@ -88,13 +69,18 @@ function displayResults(results, query) {
             });
 
             resultsDiv.appendChild(calculatorBox);
+        } else if (results.length === 0) {
+            const errorBox = document.createElement('div');
+            errorBox.classList.add('error-box');
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = 'No results found.';
+            errorBox.appendChild(errorMessage);
+            resultsDiv.appendChild(errorBox);
         } else {
             // Display regular search results
-            results.forEach(page => {
-                const resultItem = document.createElement('div');
-                resultItem.innerHTML = `<h3>${page.title}</h3><p>${page.snippet}</p>`;
-                resultsDiv.appendChild(resultItem);
-            });
+            const resultItem = document.createElement('div');
+            resultItem.innerHTML = `<h3>${results}`;
+            resultsDiv.appendChild(resultItem);
         }
     }
 }

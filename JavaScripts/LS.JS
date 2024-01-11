@@ -22,13 +22,19 @@ logoLink.addEventListener('click', function() {
     goToLink("Home.html");
 });
 
+if(type == 'Signup') {
+    showSignupForm();
+} else {
+    showLoginForm();
+}
+
 function showSignupForm() {
-    goToLink("LS.html?type=Signup")
     var formContainer = document.querySelector('.form-container');
     formContainer.innerHTML = `
         <h2>Sign Up</h2>
         <input class="form-input" type="text" placeholder="Inkmail-(example~inkmail.net)" required>
         <input class="form-input" type="password" placeholder="Password-(example1234)" required>
+        <button class="form-button" type="submit">Signup</button>
         <p>Already have an account?</p>
         <button class="form-button" onclick="goToLink('LS.html?type=Login')">Login</button>
     `;
