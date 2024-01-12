@@ -19,3 +19,13 @@ searchInput.addEventListener('keydown', function(event) {
         performSearch();
     }
 });
+
+function showMenu() {
+    var menuContainer = document.getElementById("menuContainer");
+    menuContainer.style.display = "block";
+}
+
+function closeMenu() {
+    var menuContainer = document.getElementById("menuContainer");
+    menuContainer.style.display = "none";
+}

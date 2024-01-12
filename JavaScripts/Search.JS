@@ -36,10 +36,22 @@ function displayResults(results, query) {
         errorMessage.textContent = 'No search provided.';
         errorBox.appendChild(errorMessage);
         resultsDiv.appendChild(errorBox);
+    } else if (query.includes('google')) {
+        const errorBox = document.createElement('div');
+        errorBox.classList.add('error-box');
+        const errorMessage = document.createElement('p');
+        errorMessage.textContent = 'Ink: Elevating Search Beyond Googles Reach.';
+        errorBox.appendChild(errorMessage);
+        resultsDiv.appendChild(errorBox);
+
+        const resultItem = document.createElement('div');
+        resultItem.innerHTML = `<h3>${results}`;
+        resultsDiv.appendChild(resultItem);
+        resultItem.innerHTML = 'If you really want to use Google, then go to this <a href="https://www.google.com" target="_blank" style="color: #ffffff;">link</a> :(';
     } else {
         const normalizedQuery = query;
 
-        if (normalizedQuery.includes('calculator') || isMathExpression(normalizedQuery)) {
+        if (normalizedQuery.includes('calculator') || normalizedQuery.includes('Calculator') || isMathExpression(normalizedQuery)) {
             // Display calculator with buttons and display bar
             const calculatorBox = document.createElement('div');
             calculatorBox.classList.add('calculator-box');

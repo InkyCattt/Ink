@@ -51,3 +51,29 @@ function showLoginForm() {
         <button class="form-button" onclick="goToLink('LS.html?type=Signup')">Sign up</button>
     `;
 }
+
+var loginForm = document.querySelector('.form-container');
+loginForm.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    var formData = new FormData(loginForm);
+
+    fetch('http://localhost:2700/process.php', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Login successful, perform desired actions (e.g., redirect)
+            alert(data.message);
+            // Add your redirection logic here
+        } else {
+            // Login failed, display an error message
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});

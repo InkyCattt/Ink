@@ -77,6 +77,34 @@
             border-color: #000000;
             color: #000000;
         }
+        .menu-container {
+            display: none;
+            position: fixed;
+            height: 65%;
+            width: 25%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #000000;
+            border: 1px solid #ffffff;
+            border-radius: 5px;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .menu-container .dot-point-list {
+            list-style-type: disc; /* Use disc for dot points */
+            padding: 0;
+            margin-left: 20px; /* Add some left margin for better spacing */
+        }
+
+        .menu-container .dot-point-list li {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -89,8 +117,22 @@
     </div>
 
     <div class="top-right-container">
-        <input type="button" value="Ink-Mail" class="etc-btn" onclick="goToLink('Error404.html')">
-        <input type="button" value="Code-Verse" class="etc-btn" onclick="goToLink('Error404.html')">
+        <input type="button" value="Ink-Mail" class="etc-btn" onclick="goToLink('Error401.html')">
+        <input type="button" value="What's New?" class="etc-btn" onclick="showMenu()">
+    </div>
+
+    <!-- New menu container -->
+    <div id="menuContainer" class="menu-container">
+        <p>What's New?</p>
+        <!-- Add menu items as needed -->
+        <ul class="dot-point-list">
+            <li>Calculator Was Added.</li>
+            <li>Updated UI.</li>
+            <!-- Add more items as needed -->
+        </ul>
+        <div class="top-right-container">
+            <input type="button" value="Close" class="etc-btn" onclick="closeMenu()">
+        </div>
     </div>
 
     <script src="./JavaScripts/Main.JS"></script>
