@@ -6,5 +6,5 @@ function goToLink(searchName) {
 var logoLink = document.querySelector('.logo');
 logoLink.addEventListener('click', function() {
     // Replace 'your-desired-url' with the actual URL you want to navigate to
-    goToLink("https://inkycattt.github.io/Ink/"0
+    goToLink("https://ink-web.netlify.app/home")
 });
